@@ -1,7 +1,7 @@
 ##!/bin/bash -x
 STAKE=100
 BET=1
-MAX_DAYS=20
+MAX_DAYS=30
 noOfWins=0
 noOfLoss=0
 winning_days=0
@@ -36,10 +36,10 @@ amountCalculation(){
 	if [ $winning_days -gt $loosing_days ]
 	then
 		winning_amt=$((winning_days*STAKE_PERCENTAGE))
-		echo "winning amount is: $winning_amt"
+		echo "The gambler won by $winning_days days and the winning amount is: $winning_amt"
 	else
 		loosing_amt=$((loosing_days*STAKE_PERCENTAGE))
-		echo "loosing amount is: $loosing_amt"
+		echo "The gambler loose by $loosing_days days  and the loosing amount is: $loosing_amt"
 	fi
 }
 for (( i=0;  i<MAX_DAYS; i++ ))

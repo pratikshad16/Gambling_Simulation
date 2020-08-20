@@ -1,14 +1,18 @@
 ##!/bin/bash -x
+#constants
 STAKE=100
 BET=1
 MAX_DAYS=30
+
+#variables
 winning_days=0
 loosing_days=0
-count=0
+count=1
+
+#Arrays
 declare -A luckyArray
 declare -A unluckyArray
-STAKE_PERCENTAGE=$((((STAKE*50))/100))
-dailyStake=$STAKE
+
 betCalculation(){
 	STAKE=100
 	noOfWins=0
@@ -41,6 +45,7 @@ betCalculation(){
 		((loosing_days++))
 	fi
 }
+
 amountCalculation(){
 	if [ $winning_days -gt $loosing_days ]
 	then
@@ -51,8 +56,9 @@ amountCalculation(){
 		echo "The gambler loose by $loosing_days days  and the loosing amount is: $loosing_amt"
 	fi
 }
+
 luckyDayFinder(){
-lucky=${luckyArray[1]}
+lucky=${luckyArray[0]}
 for i in ${luckyArray[@]}
 do
      if [[ $i -gt $lucky ]]
@@ -69,7 +75,7 @@ do
                 echo "the  lucky day was $countj with win of about $lucky times"
         fi
 done
-unlucky=${unluckyArray[1]}
+unlucky=${unluckyArray[0]}
 for i in ${unluckyArray[@]}
 do
      if [[ $i -gt $unlucky ]]
@@ -87,10 +93,32 @@ do
 	fi
 done
 }
+
+nextMonthCheck(){
+	if [ $winning_days -gt $loosing_days ]
+	then
+		echo "Congrats!! you can play for next month also so enter 0 to continue or 1 to stop"
+		read input
+		if [ $input -eq 0 ]
+		then
+			for (( i=0;i<30;i++ ))
+			do
+				betCalculation
+			done
+			amountCalculation
+			luckyDayFinder
+			nextMonthCheck
+		else
+			echo "Thanks for playing"
+		fi
+	else
+		echo "Oops!! you have loss so Sry,you cannot play for next month"
+	fi
+}
 for (( i=0;  i<MAX_DAYS; i++ ))
 do
 betCalculation
 done
 amountCalculation
 luckyDayFinder
-
+nextMonthCheck
